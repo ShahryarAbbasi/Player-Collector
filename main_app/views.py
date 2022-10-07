@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views import View # <- View class to handle requests
 from django.http import HttpResponse # <- a class to handle sending a type of response
 from django.views.generic.base import TemplateView
+# import models
+from .models import Player
 # Create your views here.
 class Home(TemplateView):
     template_name = "home.html"
@@ -31,3 +33,11 @@ players = [
   Player("Steph Curry",
           "https://www.si.com/.image/ar_16:9%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_768/MTkyNzUzOTg3MDY0MTc3Njkz/14022232290.jpg", "Changed the game with his 3 point shooting ability, is one of the best players of all time and still adding to his already impressive resume."),
 ]
+
+class PlayerList(TemplateView):
+    template_name = "player_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["players"] = Player.objects.all() # this is where we add the key into our context object for the view to use
+        return context
